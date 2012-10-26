@@ -5,8 +5,10 @@
  */
  $(function() {
     if(window.location.search == '?w=1'){
-        $('a').each(function(){
-            $(this).attr('href', $(this).attr('href')+'?w=1');
+        var a = $('a');
+        var href = a.attr('href');
+        a.each(function(){
+            a.attr('href', href+'?w=1');
         });
     }
 });

@@ -6,7 +6,7 @@
   "page_action" :
   {
     "default_icon" : "icon-19.png",
-    "default_title" : "There's a 'G' in this URL!"
+    "default_title" : "Ignore white-space in github diff's"
   },
   "permissions" : [
     "tabs"
