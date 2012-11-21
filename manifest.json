@@ -1,7 +1,7 @@
 {
-  "name": "Page action by URL",
+  "name": "Persist Ignore White-space on GitHub",
   "version": "1.0",
-  "description": "Shows a page action for urls which have the letter 'g' in them.",
+  "description": "Adds a switch in the address bar to toggle persistently ignore white spaces on GitHub",
   "background": { "scripts": ["background.js"] },
   "page_action" :
   {
