@@ -33,7 +33,7 @@ function checkForValidUrl(tabId, changeInfo, tab) {
         if(tab.url.toString().match(/\/commit\//) && !tab.url.toString().match(/\?w=/) ){
             // alert('add');
             // ADD MARK TO URL
-            chrome.tabs.update(tab.id, {url: tab.url+'?=w1'});
+            chrome.tabs.update(tab.id, {url: tab.url+'?w=1'});
         }
     }
 
