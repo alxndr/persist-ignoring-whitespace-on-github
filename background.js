@@ -2,14 +2,9 @@
 // IGNORE WHITESPACE IN GITHUB COMMITS
 // Timo Hofmeijer 2012
 
-chrome.extension.onMessage.addListener(function(request,sender,sendResponse){
-    sendResponse({isOn:localStorage.state});
-});
-
-// CALLED WHEN THE URL OF A TAB CHANGES.
 function checkForValidUrl(tabId, changeInfo, tab) {
 
-  // IF THE URL CONTAINS 'github.com'
+  // LOAD EXTENSION IF THE URL CONTAINS 'github.com'
   if (tab.url.indexOf('github.com') > -1 && changeInfo.status == "complete") { // PREVENT FIRING TWICE WITH changeInfo.status
 
     // ... SHOW THE PAGE ACTION
@@ -17,17 +12,21 @@ function checkForValidUrl(tabId, changeInfo, tab) {
     // alert('localStorage:'+localStorage.state);
     // IF NO 'ignore whitespace' MARK IS FOUND
     if (localStorage.state == 'false'){
+
+        // SAVE STATE
         localStorage.state = false;
-        // alert('is off');
+
+        // SET ICON
         chrome.pageAction.setIcon({tabId:tabId, path:'/off-19.png'});
+
+        // REMOVE ?w=1 IF ANY
         if(tab.url.toString().match(/\?w=/)){
-            // alert('remove');
-            // REMOVE MARK TO URL
             chrome.tabs.update(tab.id, {url: tab.url.replace(/\?w=1/g, '')});
         }
     }
     else {
-        // alert('is on');
+
+        // SET ICON
         chrome.pageAction.setIcon({tabId:tabId, path:'/on-19.png'});
 
         // ADD ?w=1 IF NOT PRESENT AND /commit/
@@ -44,23 +43,36 @@ function checkForValidUrl(tabId, changeInfo, tab) {
         }
     }
 
-    // IN THE FUTURE I WANT THE PAGEACTION TO TOGGLE THE W TAG AND STORE ITS STATE LOCALLY
+    //////////////////////
+    // ON ICON CLICK EVENT
+
     chrome.pageAction.onClicked.addListener(function(tab) {
-        if(!localStorage.block){
-            if(localStorage.state == 'true'){
-                // alert('turn off');
+
+        if(!localStorage.block){ // PREVENT FIRING MORE THAN ONCE ON A SINGLE CLICK
+
+            if(localStorage.state == 'true') {
+
+                // SAVE STATE
                 localStorage.state = false;
+
+                // SET ICON
                 chrome.pageAction.setIcon({tabId:tabId, path:'/off-19.png'});
-                if(tab.url.toString().match(/\?w=/)){
-                    // REMOVE MARK TO URL
+
+                // REMOVE ?w=1 IF ANY
+                if(tab.url.toString().match(/\?w=/)) {
                     chrome.tabs.update(tab.id, {url: tab.url.replace(/\?w=1/g, '')});
                 }
             }
-            else{
+            else {
+
+                // SAVE STATE
                 localStorage.state = true;
-                // alert('turn on');
+
+                // SET ICON
                 chrome.pageAction.setIcon({tabId:tabId, path:'/on-19.png'});
-                if(tab.url.toString().match(/\/commit\//)){
+
+                // SET IF /commit/
+                if(tab.url.toString().match(/\/commit\//)) {
                     // ADD MARK TO URL
                     chrome.tabs.update(tab.id, {url: tab.url+'?w=1'});
                 }
@@ -71,11 +83,15 @@ function checkForValidUrl(tabId, changeInfo, tab) {
         setTimeout(function(){
             delete localStorage.block;
         },500);
+
     });
   }
 }
 
-
-
 // LISTEN FOR ANY CHANGES TO THE URL OF ANY TAB.
 chrome.tabs.onUpdated.addListener(checkForValidUrl);
+
+// EXCHANGE STATE WITH contentscript.js
+chrome.extension.onMessage.addListener(function(request,sender,sendResponse){
+    sendResponse({isOn:localStorage.state});
+});
