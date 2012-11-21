@@ -29,11 +29,18 @@ function checkForValidUrl(tabId, changeInfo, tab) {
     else {
         // alert('is on');
         chrome.pageAction.setIcon({tabId:tabId, path:'/on-19.png'});
-        // alert(tab.url.toString()+'||'+tab.url.toString().match(/\?w=/))
-        if(tab.url.toString().match(/\/commit\//) && !tab.url.toString().match(/\?w=/) ){
-            // alert('add');
-            // ADD MARK TO URL
-            chrome.tabs.update(tab.id, {url: tab.url+'?w=1'});
+
+        // ADD ?w=1 IF NOT PRESENT AND /commit/
+        if(tab.url.toString().match(/\/commit\//) && !tab.url.toString().match(/\?w=/)){
+
+            // RECONSTRUCT IN CASE OF HASHES
+            var split = tab.url.split('#');
+            var preHash = split[0];
+            var postHash = split[1]? '#'+split[1] : '';
+            var url = preHash + '?w=1' + postHash;
+
+            // SET URL
+            chrome.tabs.update(tab.id, { url: url });
         }
     }
 
