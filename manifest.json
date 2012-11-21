@@ -5,7 +5,7 @@
   "background": { "scripts": ["background.js"] },
   "page_action" :
   {
-    "default_icon" : "icon-19.png",
+    "default_icon" : "trnsp-19.png",
     "default_title" : "Ignore white-space in github diff's"
   },
   "permissions" : [
@@ -23,8 +23,8 @@
     }
   ],
   "icons" : {
-    "48" : "icon-48.png",
-    "128" : "icon-128.png"
+    "48" : "off-48.png",
+    "128" : "off-128.png"
   },
   "manifest_version": 2
 }

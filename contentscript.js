@@ -4,12 +4,28 @@
  * LICENSE file.
  */
  $(function() {
-    if(window.location.search == '?w=1'){
-        var a = $('a');
-        var href = a.attr('href');
-        a.each(function(){
-            a.attr('href', href+'?w=1');
-        });
-    }
-});
 
+    chrome.extension.sendMessage({greeting:"color"},function(response){
+
+        var isOn = response.isOn;
+
+        if(isOn){
+            // GET ALL PAGE ANCHORS
+            var anchors = $('a');
+
+            anchors.each(function(i, a){
+
+                // GET HREF
+                var href = $(a).attr('href');
+
+                // ADD '?W=1' WHEN COMMIT LINK
+                if(href && href.match(/\/commit\//)) {
+                    href = href.replace(/#/g,''); // remove any hashes
+                    $(a).attr('href', href+'?w=1');
+                }
+            });
+        }
+    });
+
+
+});
