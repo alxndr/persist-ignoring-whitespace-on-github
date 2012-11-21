@@ -23,7 +23,7 @@ function checkForValidUrl(tabId, changeInfo, tab) {
         if(tab.url.toString().match(/\?w=/)){
             // alert('remove');
             // REMOVE MARK TO URL
-            chrome.tabs.update(tab.id, {url: tab.url.replace(/\?w=1/, '')});
+            chrome.tabs.update(tab.id, {url: tab.url.replace(/\?w=1/g, '')});
         }
     }
     else {
@@ -46,7 +46,7 @@ function checkForValidUrl(tabId, changeInfo, tab) {
                 chrome.pageAction.setIcon({tabId:tabId, path:'/off-19.png'});
                 if(tab.url.toString().match(/\?w=/)){
                     // REMOVE MARK TO URL
-                    chrome.tabs.update(tab.id, {url: tab.url.replace(/\?w=1/, '')});
+                    chrome.tabs.update(tab.id, {url: tab.url.replace(/\?w=1/g, '')});
                 }
             }
             else{

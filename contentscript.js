@@ -20,7 +20,7 @@
 
                 // ADD '?W=1' WHEN COMMIT LINK
                 if(href && href.match(/\/commit\//)) {
-                    href = href.replace(/#/g,''); // remove any hashes
+                    href = href.replace(/#.*/g,''); // remove any hashes
                     $(a).attr('href', href+'?w=1');
                 }
             });
