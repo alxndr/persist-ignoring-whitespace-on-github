@@ -9,7 +9,7 @@ function checkForValidUrl(tabId, changeInfo, tab) {
 
     // ... SHOW THE PAGE ACTION
     chrome.pageAction.show(tabId);
-    // alert('localStorage:'+localStorage.state);
+
     // IF NO 'ignore whitespace' MARK IS FOUND
     if (localStorage.state == 'false'){
 
@@ -50,6 +50,7 @@ function checkForValidUrl(tabId, changeInfo, tab) {
 
         if(!localStorage.block){ // PREVENT FIRING MORE THAN ONCE ON A SINGLE CLICK
 
+            // TURN ON
             if(localStorage.state == 'true') {
 
                 // SAVE STATE
@@ -63,6 +64,7 @@ function checkForValidUrl(tabId, changeInfo, tab) {
                     chrome.tabs.update(tab.id, {url: tab.url.replace(/\?w=1/g, '')});
                 }
             }
+            // TURN OFF
             else {
 
                 // SAVE STATE
@@ -71,9 +73,8 @@ function checkForValidUrl(tabId, changeInfo, tab) {
                 // SET ICON
                 chrome.pageAction.setIcon({tabId:tabId, path:'/on-19.png'});
 
-                // SET IF /commit/
+                // ADD MARK TO URL IF /commit/
                 if(tab.url.toString().match(/\/commit\//)) {
-                    // ADD MARK TO URL
                     chrome.tabs.update(tab.id, {url: tab.url+'?w=1'});
                 }
             }
@@ -82,7 +83,7 @@ function checkForValidUrl(tabId, changeInfo, tab) {
 
         setTimeout(function(){
             delete localStorage.block;
-        },500);
+        },400);
 
     });
   }
